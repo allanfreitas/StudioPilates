@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Frequência">
+			<h:form id="formPrincipal">
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<p:panel style="width: 750px;" >
+					<h:panelGrid columns="3" id="primeiroPanelGrid">
+					
+						<p:fieldset id="campoData" legend="Data" style="font-size:12px;">
+							<p:calendar id="funcionario-dtcad" showOn="button" pattern="dd/MM/yyyy" size="10" maxlength="10"
+									value="#{frequenciaBean.frequencia.data}" disabled="#{empty frequenciaBean.turmas}" 
+									required="true" requiredMessage="Campo [Data] obrigatório"/>						
+						</p:fieldset>
+						
+						<p:fieldset id="campoTurma" legend="Turma" style="font-size:12px;">
+							<h:selectOneMenu value="#{frequenciaBean.tur_codigo}" required="true" requiredMessage="Campo [Turma] obrigatório"
+								disabled="#{empty frequenciaBean.turmas}">
+								<f:selectItems value="#{frequenciaBean.turmas}" />
+							</h:selectOneMenu>
+						</p:fieldset>
+						
+						<h:panelGrid id="panelBotoes" columns="2">
+							<p:commandButton id="btConfirmar" value="Confirmar" image="ui-icon-disk" ajax="false"
+								update="formEdicao formTabela campoData campoTurma btAlterar btConfirmar"
+		                 		actionListener="#{frequenciaBean.confirmarTurma}"								
+								disabled="#{empty frequenciaBean.turmas}"/>
+							<p:commandButton id="btAlterar" value="Alterar" image="ui-icon-disk" ajax="false"
+ 								update="formEdicao,formTabela,btAlterar,btConfirmar,campoTurma,campoData"
+		                 		actionListener="#{frequenciaBean.alterarTurma}"								
+								disabled="#{frequenciaBean.frequencia.data == null}"/>
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formEdicao">
+					<p:growl id="growl" showDetail="true" />
+					<p:panel id="panelEditar" rendered="#{not empty frequenciaBean.frequencia.aluno.nome}" style="width:650px;">
+						<h:panelGrid columns="5">
+							<p:fieldset id="Nome" legend="Nome" style="font-size:12px; width:100px;">
+								<h:outputText  value="#{frequenciaBean.frequencia.aluno.nome}"/>
+							</p:fieldset>
+						
+							<p:fieldset id="Data" legend="Data" style="font-size:12px;">
+								<h:outputText value="#{frequenciaBean.frequencia.data}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:fieldset>
+						
+							<p:fieldset id="Presença" legend="Presença" style="font-size:12px;">
+								<h:selectOneRadio id="frequencia-presenca" value="#{frequenciaBean.frequencia.presenca}">
+									<f:selectItem itemLabel="Sim" itemValue="Sim" />
+									<f:selectItem  itemLabel="Não" itemValue="Não"/>
+									<p:ajax event="click" update="campoTurmaReposicao"/>
+								</h:selectOneRadio>
+							</p:fieldset>
+	
+							<p:fieldset id="campoTurmaReposicao" legend="TurmaReposicao" style="font-size:12px;">
+								<h:selectOneMenu value="#{frequenciaBean.tur_codigo_reposicao}"
+									title="Selecione uma turma"
+									required="true" requiredMessage="Campo [Turma] obrigatório"
+									rendered="#{frequenciaBean.frequencia.presenca.equals('Não')}">
+									<f:selectItems value="#{frequenciaBean.reposicoes}" />
+								</h:selectOneMenu>
+							</p:fieldset>
+	
+						</h:panelGrid>
+						<p:commandButton id="btAtualizar" value="Atualizar" oncomplete="atualizar.show()"/>
+						<p:commandButton id="btCancelar" value="Cancelar" ajax="false" action="#{frequenciaBean.cancelar}" update="panelEditar" />
+					</p:panel>
+			</h:form>
+			<!-- 
+			<h:form>
+    			<p:confirmDialog message="Deseja continuar?" header="Alteração" severity="alert" widgetVar="atualizar">
+	                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl formPrincipal formTabela" ajax="false" oncomplete="atualizar.hide()"/>
+	    		</p:confirmDialog>
+			</h:form>
+			-->
+			<h:form id="formTabela">
+				<p:dataTable id="tabela"
+					value="#{frequenciaBean.frequencias}" var="frequencia"
+					binding="#{frequenciaBean.tabela}" emptyMessage="sem registros"
+					scrollable="true" height="100"  style="font-size:12px;" 
+					rendered="#{not empty frequenciaBean.tur_codigo}">
+					
+					<p:column headerText="Aluno" footerText="Aluno" style="width:150px"
+						filterMatchMode="contains" filterBy="#{frequencia.aluno.nome}">
+						<h:outputText value="#{frequencia.aluno.nome}" />
+					</p:column>
+
+					<p:column headerText="Data" footerText="Data" style="width:150px">
+						<h:outputText value="#{frequencia.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Presença" footerText="Presença" style="width:150px">
+						<h:outputText value="#{frequencia.presenca}" />
+					</p:column>
+
+					<p:column style="width:100px">
+						<p:commandButton image="ui-icon-pencil" title="Alterar" action="#{frequenciaBean.alterar}" update="formEdicao" />
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()" >
+			    			<f:setPropertyActionListener value="#{frequencia}" target="#{frequenciaBean.tipoFrequenciaSelecionada}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:confirmDialog message="Deseja continuar?" header="Atualização" widgetVar="atualizar" width="350">
+                <h:form id="formAlterar">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+		                <p:commandButton value="Confirmar" ajax="false" update="panelEditar formTabela"
+							actionListener="#{frequenciaBean.atualizar}" oncomplete="atualizar.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+   			<p:confirmDialog message="Continuar?" header="Exclusão" severity="alert" widgetVar="confirmdlg">
+	   			<h:form id="formExcluir">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton id="btConfirmarExclusao" value="Confirmar" update="formTabela growl" ajax="false"
+	                 		actionListener="#{frequenciaBean.excluir}" oncomplete="confirmdlg.hide()"/>
+           		</h:form>
+    		</p:confirmDialog>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

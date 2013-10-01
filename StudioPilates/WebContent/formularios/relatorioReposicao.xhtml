@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<ui:composition template="../formularios/template.xhtml">
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Reposição">
+			<h:form id="formPrincipal" prependId="false">
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<h:panelGrid columns="2">
+					<p:fieldset id="DataInicial" legend="Data Inicial" style="font-size:12px;">
+						<p:calendar id="dtInicial" showOn="button"
+								value="#{reposicaoBean.dtInicial}"
+								required="true" requiredMessage="Campo [DataInicial] obrigatório"
+								disabled="#{not empty reposicaoBean.dtInicial}"
+								pattern="dd/MM/yyyy" size="10" maxlength="10" />						
+					</p:fieldset>
+					<p:fieldset id="DataFinal" legend="DataFinal" style="font-size:12px;">
+						<p:calendar id="dtFinal" showOn="button"
+								value="#{reposicaoBean.dtFinal}"
+								required="true" requiredMessage="Campo [DataFinal] obrigatório"
+								disabled="#{not empty reposicaoBean.dtFinal}"
+								pattern="dd/MM/yyyy" size="10" maxlength="10" />						
+					</p:fieldset>
+				</h:panelGrid>
+					<h:panelGrid columns="2">
+						<p:commandButton id="btConfirmarRelatorio" value="Confirmar"
+							action="#{reposicaoBean.confirmar}"
+							update="dtInicial,dtFinal,btImprimir" >
+						</p:commandButton>
+						<p:commandButton id="btCancelarRelatorio" value="Alterar"
+							actionListener="#{reposicaoBean.alterar}"
+							update="dtInicial,dtFinal,btImprimir" />
+					</h:panelGrid>
+				<p:fieldset legend="Relatório" style="width:200px;">
+					<p:commandButton value="Imprimir" ajax="false" id="btImprimir"
+						actionListener="#{reposicaoBean.relatorioGeral}"
+						disabled="#{empty reposicaoBean.dtFinal}"
+						onclick="this.form.target='_blank'"/>
+				</p:fieldset>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>
+</html>

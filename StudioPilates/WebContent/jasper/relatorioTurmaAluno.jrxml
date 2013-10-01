@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioCidade" pageWidth="555" pageHeight="802" columnWidth="515" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoStudio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fim" class="java.util.Date">
+		<fieldDescription><![CDATA[fim]]></fieldDescription>
+	</field>
+	<field name="aluno" class="br.com.luxu.classe.Aluno">
+		<fieldDescription><![CDATA[aluno]]></fieldDescription>
+	</field>
+	<field name="turma" class="br.com.luxu.classe.Turma">
+		<fieldDescription><![CDATA[turma]]></fieldDescription>
+	</field>
+	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[obs]]></fieldDescription>
+	</field>
+	<field name="inicio" class="java.util.Date">
+		<fieldDescription><![CDATA[inicio]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.Double">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	</field>
+	<title>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement x="96" y="22" width="323" height="34"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="24" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Relatório Alunos da Turma]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="89" height="79"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoStudio}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="415" y="59" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="515" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="114" y="0" width="57" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Descrição:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="86" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Código da Turma]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="0" width="28" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="171" y="0" width="117" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{turma}.getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="191" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Alunos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="0" width="46" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[DtInicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="0" width="54" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[DtFim]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="0" width="30" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="0" width="173" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Obs]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="14" width="515" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="515" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="191" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{aluno}.getNome()+" "+$F{aluno}.getSobrenome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="255" y="0" width="51" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fim}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="309" y="0" width="33" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="191" y="0" width="64" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{inicio}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="342" y="0" width="173" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{obs}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="395" y="0" width="80" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="475" y="0" width="40" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="515" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

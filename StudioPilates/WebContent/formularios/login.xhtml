@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<h:head>
+	<title>Tela Principal - Studio Pilates CorpoAlma</title>
+</h:head>
+<h:body>
+	<p:layout fullPage="true" id="formPrincipal">
+		<p:layoutUnit position="top" height="75"
+			header="Studio Pilates CorpoAlma" closable="true" collapsible="true">
+			<p:graphicText fontName="Algerian" fontSize="24" value="Tela de Login" />
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="left" width="190" header="Studio Pilates" closable="true" collapsible="true">
+			<p:graphicImage value="/images/Studio.png" style="padding-left: 1%;" />
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="center" header="Principal">
+			<h:form id="formLogin">
+				<p:growl id="growl" showDetail="true" life="3000" />
+				<p:focus />
+				<p:panel style="width: 300PX">
+					<h:panelGrid columns="2">
+						<p:fieldset legend="Usuário" style="font-size:12px;">
+							<p:inputText id="campoLogin" value="#{loginBean.usuario.login}"
+								required="true" requiredMessage="Campo [Login] obrigatório"
+								size="10" maxlength="10" />
+						</p:fieldset>
+						<p:fieldset legend="Senha" style="font-size:12px;">
+							<p:password feedback="false" id="campoSenha" required="true"
+								requiredMessage="Campo [Senha] obrigatório"
+								value="#{loginBean.usuario.senha}" size="10" maxlength="10" />
+						</p:fieldset>
+					</h:panelGrid>
+				<p:commandButton id="botaoAcessar" value="Acessar" ajax="false"
+					action="#{loginBean.verificarLogin}" />
+				<p:commandButton id="botaoLimpar" value="Limpar" ajax="false"
+					action="#{loginBean.limpar}" />
+				</p:panel>
+			</h:form>
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="right" width="320" header="Calendário" closable="true" collapsible="true">
+			<p:calendar mode="inline" locale="pt_BR" showButtonPanel="true" navigator="true"/> 
+		</p:layoutUnit>
+		
+		<p:layoutUnit position="bottom" height="75"
+			header="Luciano Martins - zicadopv@gmail.com" closable="true"
+			collapsible="true">
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

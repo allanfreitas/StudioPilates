@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Reposição">
+			<h:form id="formPrincipal">
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<p:panel style="width: 680px;">
+					<h:panelGrid columns="3" id="primeiroPanelGrid">
+					
+						<p:fieldset id="DataInicial" legend="Data Inicial" style="font-size:12px;">
+							<p:calendar id="reposicao-dtInicial" showOn="button"
+									value="#{reposicaoBean.dtInicial}"
+									required="true" requiredMessage="Campo [DataInicial] obrigatório"
+									disabled="#{not empty reposicaoBean.dtInicial}"
+									pattern="dd/MM/yyyy" size="10" maxlength="10" />						
+						</p:fieldset>
+						
+						<p:fieldset id="DataFinal" legend="DataFinal" style="font-size:12px;">
+							<p:calendar id="reposicao-dtFinal" showOn="button"
+									value="#{reposicaoBean.dtFinal}"
+									required="true" requiredMessage="Campo [DataFinal] obrigatório"
+									disabled="#{not empty reposicaoBean.dtFinal}"
+									pattern="dd/MM/yyyy" size="10" maxlength="10" />						
+						</p:fieldset>
+						
+						<h:panelGrid id="panelBotoes" columns="2">
+							<p:commandButton id="btConfirmarReposicao" value="Confirmar" image="ui-icon-disk"
+								action="#{reposicaoBean.confirmar}"
+								disabled="#{reposicaoBean.dtInicial != null}"
+								update="formPrincipal,formTabela,reposicao-dtInicial,DataFinal,btAlterarReposicao,btConfirmarReposicao"/>
+							<p:commandButton id="btAlterarReposicao" value="Alterar" image="ui-icon-disk"
+								actionListener="#{reposicaoBean.alterar}"
+								disabled="#{reposicaoBean.dtInicial == null}"
+								update="formPrincipal,formTabela,btAlterar,btConfirmarReposicao,campoTurma,campoData,formEdicao"/>
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+				</p:panel>
+			</h:form>
+			<h:form id="formEdicao">
+					<p:growl id="growl" showDetail="true" />
+					<p:panel id="panelEdicao" rendered="#{reposicaoBean.tur_codigo != null}" style="width: 750px;">
+						<h:panelGrid columns="5">
+							<p:fieldset id="Nome" legend="Nome" style="font-size:12px; width:70px;">
+								<h:outputText value="#{reposicaoBean.frequencia.aluno.nome}"/>
+							</p:fieldset>
+						
+							<p:fieldset id="Data" legend="DtFalta" style="font-size:12px;">
+								<h:outputText value="#{reposicaoBean.frequencia.data}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:fieldset>
+						
+							<p:fieldset legend="DtReposição" style="font-size:12px;">
+								<p:calendar  id="DataReposicao" showOn="button"
+										value="#{reposicaoBean.frequencia.datareposicao}"
+										disabled="#{not empty frequenciaBean.frequencia.data}"
+										pattern="dd/MM/yyyy" size="10" maxlength="10" />						
+							</p:fieldset>
+						
+							<p:fieldset id="campoTurma" legend="TurmaReposição" style="font-size:12px;">
+								 <h:outputText value="#{reposicaoBean.frequencia.turmaReposicao.descricao}"/>
+							</p:fieldset>
+
+							<p:fieldset id="Repor" legend="Repor?" style="font-size:12px;">
+								<h:selectOneRadio id="frequencia-repor"
+									value="#{reposicaoBean.frequencia.repos}">
+									<f:selectItem itemLabel="Sim" itemValue="Sim" />
+									<f:selectItem itemLabel="Não" itemValue="Não" />
+								</h:selectOneRadio>
+							</p:fieldset>
+							<p:commandButton id="btAtualizar" value="Atualizar"	update="formEdicao formTabela" action="#{reposicaoBean.atualizar}"/>
+							<p:commandButton id="btCancelar" value="Cancelar" update="formEdicao" action="#{reposicaoBean.cancelar}"/>
+						</h:panelGrid>
+					</p:panel>
+
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="tabela"
+					value="#{reposicaoBean.frequencias}" var="reposicao"
+					binding="#{reposicaoBean.tabela}" emptyMessage="sem registros"
+					scrollable="true" height="100"  style="font-size:12px;" 
+					rendered="#{not empty reposicaoBean.dtInicial}">
+					
+					<p:column headerText="Aluno" footerText="Aluno" style="width:150px;"
+						filterMatchMode="contains" filterBy="#{frequencia.aluno.nome}">
+						<h:outputText value="#{reposicao.aluno.nome}" />
+					</p:column>
+
+					<p:column headerText="Turma" footerText="Turma" style="width:150px;"
+						filterMatchMode="contains" filterBy="#{frequencia.turma.modalidade.descricao}">
+						<h:outputText value="#{reposicao.turma.descricao}" />
+					</p:column>
+
+					<p:column headerText="DtFalta" footerText="DtFalta" style="width:150px;">
+						<h:outputText value="#{reposicao.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="TurmaReposição" footerText="TurmaReposição" style="width:150px;">
+						<h:outputText value="#{reposicao.turmaReposicao.descricao}" />
+					</p:column>
+
+					<p:column headerText="Repos" footerText="repos" style="width:150px">
+						<h:outputText value="#{reposicao.repos}" />
+					</p:column>
+
+					<p:column style="width:100px">
+						<p:commandButton image="ui-icon-pencil" title="Alterar"
+							action="#{reposicaoBean.alterarRepor}"
+							update="formEdicao,panelEdicao" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

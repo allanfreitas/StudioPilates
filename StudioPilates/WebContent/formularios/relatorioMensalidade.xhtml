@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Mensalidade">
+			<h:form id="formPrincipal" prependId="false">
+				<p:panel id="panelImprimir" header="Relatório" rendered="#{entradaMensalidadesBBean.ativarImprimir == null}" style="width:730px;"  >
+					<p:growl id="growl" showDetail="true" life="3000" />
+ 			
+					<h:panelGrid columns="3">
+						<p:fieldset legend="Filtro" style="font-size:12px;">
+							<h:selectOneRadio id="relatorioMensalidade"
+								value="#{entradaMensalidadesBBean.tipoRelatorio}"
+								required="true" requiredMessage="Campo [Filtro] obrigatório">
+								<f:selectItem itemLabel="por Turma" itemValue="T"  />
+								<f:selectItem itemLabel="por Aluno" itemValue="A" />
+								<f:ajax render="selecaoTurmaRelatorio selecaoAlunoRelatorio" execute="@this" />
+							</h:selectOneRadio>
+						</p:fieldset>
+						
+ 							<p:fieldset legend="Turma" style="font-size:15px;">
+									<h:selectOneMenu value="#{entradaMensalidadesBBean.tur_codigo_relatorio}"
+										id="selecaoTurmaRelatorio"
+										disabled="#{entradaMensalidadesBBean.tipoRelatorio == 'A'}"
+										required="true" requiredMessage="Campo [Turma] obrigatório">
+										<f:selectItems value="#{entradaMensalidadesBBean.turmasAlunos}" />
+									</h:selectOneMenu>
+								</p:fieldset>
+							
+								<p:fieldset legend="Aluno" style="font-size:15px;">
+									<h:selectOneMenu value="#{entradaMensalidadesBBean.alu_codigo_relatorio}"
+										id="selecaoAlunoRelatorio"
+										disabled="#{entradaMensalidadesBBean.tipoRelatorio == 'T'}">
+										<f:selectItems value="#{entradaMensalidadesBBean.alunosTurmas}" />
+									</h:selectOneMenu>
+								</p:fieldset>
+						
+						<p:fieldset legend="Data Inicial" style="font-size:12px;">
+							<p:calendar id="relMensalidade-inicio"
+								value="#{entradaMensalidadesBBean.dtInicial}"
+								pattern="dd/MM/yyyy" size="10" maxlength="10" showOn="button" />
+						</p:fieldset>
+						<p:fieldset legend="Data Final" style="font-size:12px;">
+							<p:calendar id="relMensalidade-fim"
+								value="#{entradaMensalidadesBBean.dtFinal}" pattern="dd/MM/yyyy"
+								size="10" maxlength="10" showOn="button" />
+						</p:fieldset>
+					</h:panelGrid>
+						
+				</p:panel>
+				
+				<h:panelGroup>
+					<h:panelGrid columns="3">
+						<p:commandButton id="btConfirmarRelatorio" value="Confirmar"
+							action="#{entradaMensalidadesBBean.confirmarTurmaRelatorio}"
+							update="selecaoTurmaRelatorio selecaoAlunoRelatorio relatorioMensalidade btImprimir panelImprimir" />
+						<p:commandButton id="btCancelarRelatorio" value="Alterar"
+							actionListener="#{entradaMensalidadesBBean.alterarTurmaRelatorio}"
+							update="selecaoTurmaRelatorio selecaoAlunoRelatorio relatorioMensalidade btImprimir panelImprimir" />
+						<p:commandButton value="Imprimir" id="btImprimir" ajax="false"
+							disabled="#{entradaMensalidadesBBean.ativarImprimir == null}"
+							actionListener="#{entradaMensalidadesBBean.relatorioGeral}"
+							onclick="this.form.target='_blank'" />
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

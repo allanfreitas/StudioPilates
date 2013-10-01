@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Modalidade">
+			<h:form id="formPrincipal">
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery('input[id*=modalidade-preco]').maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+				});
+				</script>
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<p:panel style="width: 700px;">
+					<h:panelGrid columns="3">
+						<p:fieldset legend="Descrição" style="font-size:12px; width:5%;">
+							<p:inputText id="modalidade-descricao" size="30" maxlength="30" 
+								value="#{modalidadeBean.modalidade.descricao}"
+								required="true" requiredMessage="Campo [Descrição] obrigatório" />
+						</p:fieldset>
+						
+						<p:fieldset legend="Preço" style="font-size:12px;">
+							<p:inputText id="modalidade-preco" size="10" maxlength="10" value="#{modalidadeBean.modalidade.preco}">
+									<f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="R$" />  
+							</p:inputText>
+						</p:fieldset>
+					</h:panelGrid>
+				</p:panel>
+				<p:commandButton id="btCadastrar" value="Cadastrar" image="ui-icon-disk" 
+					oncomplete="inserir.show()"
+					rendered="#{modalidadeBean.modalidade.descricao == null}" />
+				<p:commandButton id="btAlterar" value="Atualizar" image="ui-icon-disk" 
+					oncomplete="atualizar.show()"
+					rendered="#{modalidadeBean.modalidade.descricao != null}" />
+				<p:commandButton id="btNovo" value="Novo" image="ui-icon-disk"
+					actionListener="#{modalidadeBean.novo}"
+					update="formPrincipal"
+					rendered="#{modalidadeBean.modalidade.descricao != null}" />
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="tabela"
+					value="#{modalidadeBean.modalidades}" var="modalidade"
+					binding="#{modalidadeBean.tabela}" emptyMessage="sem registros"
+					scrollable="true" height="100" style="font-size:12px;" >
+					
+					<p:column headerText="Descrição" footerText="Descrição"	style="width:110px;"
+							filterMatchMode="contains" filterBy="#{modalidade.descricao}">
+						<h:outputText value="#{modalidade.descricao}" />
+					</p:column>
+					
+					<p:column headerText="Preço" footerText="Preço" style="width:130px;">
+						<h:outputText value="#{modalidade.preco}"  >
+							<f:convertNumber pattern="R$ #,##0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:100px;">
+						<p:commandButton image="ui-icon-pencil" title="Alterar"
+							action="#{modalidadeBean.alterar}" update="formPrincipal" />
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()" >
+			    			<f:setPropertyActionListener value="#{modalidade}" target="#{modalidadeBean.tipoModalidadeSelecionada}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:confirmDialog message="Deseja Incluir?" header="Inclusão" widgetVar="inserir" width="350">
+                <h:form id="formIncluir">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="inserir.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 actionListener="#{modalidadeBean.salvar}" oncomplete="inserir.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+			<p:confirmDialog message="Deseja Alterar?" header="Alteração" widgetVar="atualizar" width="350">
+                <h:form id="formAlterar">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 actionListener="#{modalidadeBean.atualizar}" oncomplete="atualizar.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+			
+			<h:form>
+    			<p:confirmDialog message="Deseja continuar?" header="Exclusão" severity="alert" widgetVar="confirmdlg">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl" ajax="false" actionListener="#{modalidadeBean.excluir}" oncomplete="confirmdlg.hide()"/>
+	    		</p:confirmDialog>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<ui:composition template="../formularios/template.xhtml">
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Turma por Aluno">
+			<h:form id="formPrincipalRelatorio">
+				<h:panelGrid id="panelSelecionarTurma" column="2">
+					<p:fieldset legend="Turma" style="font-size:15px;">
+						<h:selectOneMenu value="#{turmaAlunoBean.tur_codigo_relatorio}"
+							id="selecaoTurmaRelatorio"
+							disabled="#{not empty turmaAlunoBean.tur_codigo_relatorio}"
+							required="true" requiredMessage="Campo [Turma] obrigatório">
+							<f:selectItems value="#{turmaAlunoBean.turmas}" />
+						</h:selectOneMenu>
+					</p:fieldset>
+					<h:panelGroup>
+						<h:panelGrid columns="2">
+							<p:commandButton id="btConfirmarRelatorio" value="Confirmar"
+								action="#{turmaAlunoBean.confirmarTurmaRelatorio}"
+								update="selecaoTurmaRelatorio btImprimir" />
+							<p:commandButton id="btCancelarRelatorio" value="Alterar"
+								actionListener="#{turmaAlunoBean.alterarTurmaRelatorio}"
+								update="selecaoTurmaRelatorio btImprimir" />
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:panelGrid>
+				<p:fieldset legend="Relatorio" style="font-size:15px; width:100px;">
+					<p:commandButton value="Imprimir" ajax="false" id="btImprimir"
+						actionListener="#{turmaAlunoBean.relatorioGeral}"
+						disabled="#{empty turmaAlunoBean.tur_codigo_relatorio}"
+						onclick="this.form.target='_blank'" />
+				</p:fieldset>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>
+</html>

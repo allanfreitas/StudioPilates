@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Turmas e Alunos" scrollable="true">
+			<h:form id="formPrincipal">
+				<p:panel style="width: 950PX">
+					<p:growl id="growl" showDetail="true" />
+					<p:focus />
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<h:panelGrid id="panelSelecionarTurma" column="2">
+								<p:fieldset legend="Turma" style="font-size:15px;">
+									<h:selectOneMenu id="selecaoTurma" required="true" requiredMessage="Campo [Turma] obrigatório"
+										value="#{turmaAlunoBean.tur_codigo}"
+										disabled="#{not empty turmaAlunoBean.tur_codigo}">
+										<f:selectItems value="#{turmaAlunoBean.turmas}" />
+									</h:selectOneMenu>
+								</p:fieldset>
+								<h:panelGroup>
+									<h:panelGrid columns="2">
+										<p:commandButton id="btConfirmar" value="Confirmar"
+											action="#{turmaAlunoBean.confirmarTurma}"
+											image="ui-icon-disk"
+											update="formAluno,formTabela,selecaoTurma,selecaoAluno,campoProfessor,campoModalidade,campoHoraInicial,campoHoraFinal,
+												campoCapacidade,campoInscritos,campoAtiva,campoAulasDia" />
+										<p:commandButton id="btCancelar" value="Alterar"
+											actionListener="#{turmaAlunoBean.alterarTurma}"
+											image="ui-icon-disk"
+											update="formAluno,formTabela,selecaoTurma,selecaoAluno,campoProfessor,campoModalidade,
+													campoHoraInicial,campoHoraFinal,campoCapacidade,campoInscritos,campoAtiva,campoAulasDia"/>
+									</h:panelGrid>
+								</h:panelGroup>
+							</h:panelGrid>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:panelGrid columns="4" id="panelCampoTurma">
+								<p:fieldset id="campoProfessor" legend="Professor" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.funcionario.nome}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoModalidade" legend="Modalidade" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.modalidade.descricao}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoHoraInicial" legend="Hora Inicial" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.horaInicio}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoHoraFinal" legend="Hora Final" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.horaFim}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoCapacidade" legend="Capacidade" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.capacidade}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoInscritos" legend="Inscritos" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.inscritos}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoAtiva" legend="Ativa" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.status}" style="font-weight: bold;" />
+								</p:fieldset>
+								<p:fieldset id="campoAulasDia" legend="Aulas/Dia" style="font-size:15px;">
+									<h:outputLabel value="#{turmaAlunoBean.turma.dia}" style="font-weight: bold;" />
+								</p:fieldset>
+							</h:panelGrid>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formAluno">
+				<p:panel id="panelAluno" style="width: 950px;" rendered="#{not empty turmaAlunoBean.tur_codigo}" >
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery('input[id*=turmaAluno-valor]').maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+				});
+				</script>
+					
+					<h:panelGrid columns="5" id="panelCampoAluno">
+					
+						<p:fieldset id="selecaoAdicionarAluno" legend="Aluno"
+							style="font-size:12px;">
+							<h:selectOneMenu id="selecaoAluno"
+								value="#{turmaAlunoBean.alu_codigo}"
+								disabled="#{turmaAlunoBean.capacidadeOK != null}"
+								required="true" requiredMessage="Campo [Aluno] obrigatório">
+								<f:selectItems value="#{turmaAlunoBean.alunos}" />
+							</h:selectOneMenu>
+						</p:fieldset>
+						
+						<p:fieldset legend="Inicio" style="font-size:12px;">
+							<p:calendar id="turmaAluno-inicio" showOn="button"
+								disabled="#{turmaAlunoBean.capacidadeOK != null}"
+								value="#{turmaAlunoBean.turmaAluno.inicio}" pattern="dd/MM/yyyy"
+								size="10" maxlength="10" />
+						</p:fieldset>
+						
+						<p:fieldset legend="Fim" style="font-size:12px;">
+							<p:calendar id="turmaAluno-fim" showOn="button"
+								disabled="#{turmaAlunoBean.capacidadeOK != null}"
+								value="#{turmaAlunoBean.turmaAluno.fim}" pattern="dd/MM/yyyy"
+								size="10" maxlength="10" />
+						</p:fieldset>
+						
+						<p:fieldset legend="Valor" style="font-size:12px; width:80px;">
+							<p:inputText id="turmaAluno-valor" value="#{turmaAlunoBean.turmaAluno.valor}" disabled="#{turmaAlunoBean.capacidadeOK != null}"
+ 											size="6" maxlength="6" >
+									<f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="R$" />
+							</p:inputText>
+						</p:fieldset>
+						
+						<p:fieldset legend="Obs" style="font-size:12px;">
+							<p:inputTextarea value="#{turmaAlunoBean.turmaAluno.obs}"
+								disabled="#{turmaAlunoBean.capacidadeOK != null}"
+								id="turmaAluno-obs" cols="30" rows="2" />
+						</p:fieldset>
+						
+					</h:panelGrid>
+				</p:panel>
+				<p:commandButton id="btAdd" value="Adicionar"
+					action="#{turmaAlunoBean.salvar}" update="formTabela,formPrincipal,formAluno"
+					 rendered="#{not empty turmaAlunoBean.tur_codigo}"
+					 disabled="#{turmaAlunoBean.capacidadeOK != null}" />
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="tabela" value="#{turmaAlunoBean.turmaAlunos}"
+							var="turmaAluno" binding="#{turmaAlunoBean.tabela}"
+							rendered="#{not empty turmaAlunoBean.tur_codigo}"
+							emptyMessage="sem registros" scrollable="true" height="100" style="font-size:12px;" >
+					
+					<p:column headerText="Alunos" footerText="Alunos" style="width:200px;"
+						filterMatchMode="contains" filterBy="#{turmaAluno.aluno.nome}">
+						<h:outputText value="#{turmaAluno.aluno.nome} " />
+					</p:column>
+					
+					<p:column headerText="Inicio" footerText="Inicio" style="width:100px;">
+						<h:outputText value="#{turmaAluno.inicio}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Fim" footerText="Fim" style="width:100px;">
+						<h:outputText value="#{turmaAluno.fim}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Valor" footerText="Valor" style="width:100px;">
+						<h:outputText value="#{turmaAluno.valor}"> 
+							<f:convertNumber pattern="R$ #,##0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:100px">
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()" >
+			    			<f:setPropertyActionListener value="#{turmaAluno}" target="#{turmaAlunoBean.tipoTurmaAlunoSelecionado}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<h:form>
+    			<p:confirmDialog message="Deseja continuar?" header="Exclusão" severity="alert" widgetVar="confirmdlg">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl" ajax="false" actionListener="#{turmaAlunoBean.excluir}" oncomplete="confirmdlg.hide()"/>
+	    		</p:confirmDialog>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

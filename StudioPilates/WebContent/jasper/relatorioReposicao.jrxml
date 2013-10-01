@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioCidade" pageWidth="555" pageHeight="802" columnWidth="515" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[obs]]></fieldDescription>
+	</field>
+	<field name="aluno" class="br.com.luxu.classe.Aluno">
+		<fieldDescription><![CDATA[aluno]]></fieldDescription>
+	</field>
+	<field name="turma" class="br.com.luxu.classe.Turma">
+		<fieldDescription><![CDATA[turma]]></fieldDescription>
+	</field>
+	<field name="reposicao" class="java.util.Date">
+		<fieldDescription><![CDATA[reposicao]]></fieldDescription>
+	</field>
+	<field name="presenca" class="java.lang.String">
+		<fieldDescription><![CDATA[presenca]]></fieldDescription>
+	</field>
+	<field name="data" class="java.util.Date">
+		<fieldDescription><![CDATA[data]]></fieldDescription>
+	</field>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="139" y="17" width="276" height="34"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="24" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Reposição]]></text>
+			</staticText>
+			<image>
+				<reportElement x="13" y="0" width="73" height="79"/>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\workspace\\StudioPilates\\WebContent\\images\\Studio.png"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="415" y="51" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="10" width="515" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="73" y="0" width="222" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nome do Aluno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="73" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Data Falta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="0" width="64" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reposição]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="24" width="515" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="295" y="0" width="142" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Turma do Aluno]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="451" y="1" width="64" height="19"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{reposicao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="73" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="0" width="222" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{aluno}.getNome()+" "+$F{aluno}.getSobrenome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="295" y="1" width="142" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{turma}.getDia()+"("+
+$F{turma}.getHoraInicio()+"-"+
+$F{turma}.getHoraFim()+")"+
+$F{turma}.getModalidade().getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="12" width="515" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="385" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="465" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

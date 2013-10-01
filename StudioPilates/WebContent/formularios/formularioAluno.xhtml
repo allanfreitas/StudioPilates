@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Aluno" scrollable="true">
+			<h:form id="formPrincipal" prependId="false">
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery('input[id*=aluno-desconto]').maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+				});
+				</script>
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<p:tabView id="formTab">
+					<p:tab title="Dados Pessoais">
+						<h:panelGrid columns="4" width="80%">
+							<p:fieldset legend="Nome" style="font-size:12px;">
+								<p:inputText id="aluno-nome"
+									required="true" requiredMessage="Campo [Nome] obrigatório"
+									value="#{alunoBean.aluno.nome}" size="40" maxlength="40" />
+							</p:fieldset>
+
+							<p:fieldset legend="Sobrenome" style="font-size:12px;">
+								<p:inputText id="aluno-sobrenome" size="40" maxlength="40"
+									value="#{alunoBean.aluno.sobrenome}" />
+							</p:fieldset>
+
+							<p:fieldset legend="Sexo" style="font-size:12px;">
+								<h:selectOneRadio id="aluno-sexo"
+									value="#{alunoBean.aluno.sexo}">
+									<f:selectItem itemLabel="Masculino" itemValue="M" />
+									<f:selectItem itemLabel="Feminino" itemValue="F" />
+								</h:selectOneRadio>
+							</p:fieldset>
+
+							<p:fieldset legend="Estado Civil" style="font-size:12px;">
+								<h:selectOneRadio id="aluno-estcivil"
+									value="#{alunoBean.aluno.estcivil}">
+									<f:selectItem itemLabel="Solteiro" itemValue="S" />
+									<f:selectItem itemLabel="Casado" itemValue="C" />
+								</h:selectOneRadio>
+							</p:fieldset>
+
+							<p:fieldset legend="Data de Nascimento" style="font-size:12px;">
+								<p:inputMask value="#{alunoBean.aluno.nascimento}" mask="99/99/9999" pattern="dd/MM/yyyy" >
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+									<p:ajax event="blur" update="aluno-idade" listener="#{alunoBean.setarIdade}" />
+								</p:inputMask>
+							</p:fieldset>
+
+							<p:fieldset legend="Idade" style="font-size:12px;">
+								<h:outputText id="aluno-idade" value="#{alunoBean.aluno.idade}" />
+							</p:fieldset>
+
+							<h:panelGroup>
+								<h:panelGrid columns="3" >
+									<p:fieldset legend="Peso" style="font-size:12px;">
+										<p:inputMask value="#{alunoBean.aluno.peso}" mask="999.9"
+											id="aluno-peso" size="4" maxlength="4" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Altura" style="font-size:12px;">
+										<p:inputMask id="aluno-altura" mask="9.99"
+											value="#{alunoBean.aluno.altura}" size="4" maxlength="4" />
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+									<p:fieldset legend="Ativo" style="font-size:12px;">
+										<h:selectOneRadio id="aluno-ativo"
+											value="#{alunoBean.aluno.ativo}"
+											required="true" requiredMessage="Campo [Ativo] obrigatório">
+											<f:selectItem itemLabel="Sim" itemValue="S" />
+											<f:selectItem itemLabel="Não" itemValue="N" />
+										</h:selectOneRadio>
+									</p:fieldset>
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Localidade">
+						<h:panelGrid columns="3" width="80%">
+							<p:fieldset legend="Endereço" style="font-size:12px; width:350px;">
+								<p:inputText id="aluno-endereco" value="#{alunoBean.aluno.endereco}" size="40" maxlength="40" />
+							</p:fieldset>
+
+							<h:panelGroup>
+								<h:panelGrid columns="2">
+									<p:fieldset legend="Número" style="font-size:12px; width:100px;">
+										<p:inputText id="aluno-numero" value="#{alunoBean.aluno.numero}" size="10" maxlength="10" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Complemento" style="font-size:12px; width:100px;">
+										<p:inputText id="aluno-complemento" value="#{alunoBean.aluno.complemento}" size="10" maxlength="10" />
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+
+							<h:panelGroup>
+								<h:panelGrid columns="2">
+									<p:fieldset legend="Bairro" style="font-size:12px; width:150px;">
+										<p:inputText value="#{alunoBean.aluno.bairro}" id="aluno-bairro" size="15" maxlength="15" style="width:150px;"/>
+									</p:fieldset>
+	
+									<p:fieldset legend="Cidade" style="font-size:12px; width:150px;">
+										<h:selectOneMenu id="selectCidade"
+											value="#{alunoBean.cid_Codigo}" title="Selecione uma cidade">
+											<f:selectItems value="#{alunoBean.cidades}" />
+										</h:selectOneMenu>
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>		
+							
+							<h:panelGroup>
+								<h:panelGrid columns="2">
+									<p:fieldset legend="CEP" style="font-size:12px; width:150px;">
+										<p:inputMask id="aluno-cep" mask="99.999-999"
+											value="#{alunoBean.aluno.cep}" size="16" maxlength="16" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Profissão" style="font-size:12px; width:200px;">
+										<p:inputText value="#{alunoBean.aluno.profissao}" id="aluno-profissao"
+											size="25" maxlength="25" />
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+							
+							<p:fieldset legend="Escolaridade" style="font-size:12px; width:390px;">
+								<h:selectOneRadio id="aluno-escolaridade" value="#{alunoBean.aluno.escolaridade}">
+									<f:selectItem itemLabel="Fundamental" itemValue="F" />
+									<f:selectItem itemLabel="Médio" itemValue="M" />
+									<f:selectItem itemLabel="Sup. Incompleto" itemValue="I" />
+									<f:selectItem itemLabel="Sup. Completo" itemValue="C" />
+								</h:selectOneRadio>
+							</p:fieldset>
+	
+							<p:fieldset legend="Curso Graduação" style="font-size:12px; width:230px;">
+								<p:inputText value="#{alunoBean.aluno.graduacao}" id="aluno-graduacao"
+									size="25" maxlength="25" />
+							</p:fieldset>
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Dados Complementares">
+						<h:panelGrid columns="3">
+							
+								<h:panelGrid columns="3">
+									<p:fieldset legend="Tel. Res."	style="font-size:12px; width:120px;">
+										<p:inputMask value="#{alunoBean.aluno.foneres}"
+											id="aluno-telres" mask="(99) 9999-9999" size="10" maxlength="10" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Tel. Com."	style="font-size:12px; width:120px;">
+										<p:inputMask value="#{alunoBean.aluno.fonecom}"
+											id="aluno-telcom" mask="(99) 9999-9999" size="10" maxlength="10" />
+									</p:fieldset>
+								</h:panelGrid>
+								
+								<h:panelGrid columns="3">
+								
+								<p:fieldset legend="Celular 1" style="font-size:12px; width:120px;">
+									<p:inputMask value="#{alunoBean.aluno.fonecel}"
+										id="aluno-telcel" mask="(99) 9999-9999" size="10" maxlength="10" />
+								</p:fieldset>
+	
+								<p:fieldset legend="Celular 2" style="font-size:12px; width:120px;">
+									<p:inputMask value="#{alunoBean.aluno.fonecel2}"
+										id="aluno-telcel2" mask="(99) 9999-9999" size="10" maxlength="10" />
+								</p:fieldset>
+							</h:panelGrid>
+
+							<p:fieldset legend="e-Mail" style="font-size:12px; width:310px;">
+								<p:inputText value="#{alunoBean.aluno.email}"
+								        id="aluno-email" size="40" maxlength="40" />
+							</p:fieldset>
+							
+							
+							<h:panelGrid columns="3">
+								<p:fieldset legend="RG" style="font-size:12px; width:140px;">
+									<p:inputMask id="aluno-rg"
+										value="#{alunoBean.aluno.rg}"
+										mask="99.999.999?-9" size="15" maxlength="15" />
+								</p:fieldset>
+	
+								<p:fieldset legend="CPF" style="font-size:12px; width:140px;">
+									<p:inputMask id="aluno-cpf" value="#{alunoBean.aluno.cpf}"
+										mask="999.999.999-99" size="15" maxlength="15" />
+								</p:fieldset>
+							</h:panelGrid>
+							
+							<h:panelGrid columns="3">
+								<p:fieldset legend="Dt Matrícula" style="font-size:12px;  width:170px;">
+										<p:inputMask value="#{alunoBean.aluno.cadastro}" mask="99/99/9999" pattern="dd/MM/yyyy" >
+											<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+										</p:inputMask>
+	 							</p:fieldset>
+	
+								<p:fieldset legend="Dt Saida" style="font-size:12px; width:140px;">
+									<p:calendar id="aluno-dtsaida" showOn="button"
+										value="#{alunoBean.aluno.demissao}" pattern="dd/MM/yyyy"
+										size="10" maxlength="10" />
+								</p:fieldset>
+							</h:panelGrid>
+
+							<h:panelGrid columns="3">
+							<p:fieldset legend="Desconto" style="font-size:12px; ">
+								<p:inputText id="aluno-desconto" size="4" maxlength="4"	value="#{alunoBean.aluno.desconto}">
+									<f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="R$" />
+								</p:inputText>
+							</p:fieldset>
+
+							</h:panelGrid>
+							
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Historico 1a. Parte">
+						<h:panelGrid columns="1">
+							<p:fieldset legend="Atividade Fisica" style="font-size:12px; width:900px;">
+								<h:panelGrid columns="3">
+									<h:selectOneRadio id="aluno-atividade"
+										value="#{alunoBean.aluno.atividadefisica}">
+										<f:selectItem itemLabel="Sim" itemValue="S" />
+										<f:selectItem itemLabel="Não" itemValue="N" />
+									</h:selectOneRadio>
+
+									<p:fieldset legend="Descrição" style="font-size:12px;">
+										<p:inputText value="#{alunoBean.aluno.descAtividade}"
+											id="aluno-descAtividade" size="60" maxlength="60" />
+									</p:fieldset>
+
+									<p:fieldset legend="Quantidade" style="font-size:12px;">
+										<p:inputText value="#{alunoBean.aluno.qtatifisica}"
+											id="aluno-qtdade" size="30" maxlength="30" />
+									</p:fieldset>
+								</h:panelGrid>
+							</p:fieldset>
+
+							<h:panelGrid columns="2">
+							<p:fieldset legend="Dores no corpo" style="font-size:12px; width:580px;">
+								<h:panelGrid columns="2">
+									<h:selectOneRadio id="aluno-dorcorpo"
+										value="#{alunoBean.aluno.dorcorpo}">
+										<f:selectItem itemLabel="Sim" itemValue="S" />
+										<f:selectItem itemLabel="Não" itemValue="N" />
+									</h:selectOneRadio>
+									<p:fieldset legend="Descrição" style="font-size:12px;">
+										<p:inputText value="#{alunoBean.aluno.descDorCorpo}"
+											id="aluno-descDorCorpo" size="60" maxlength="60" />
+									</p:fieldset>
+								</h:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Patologia" style="font-size:12px; width:580px;" >
+								<h:panelGrid columns="2">
+									<h:selectOneRadio id="aluno-patologia"
+										value="#{alunoBean.aluno.patologia}">
+										<f:selectItem itemLabel="Sim" itemValue="S" />
+										<f:selectItem itemLabel="Não" itemValue="N" />
+									</h:selectOneRadio>
+									<p:fieldset legend="Descrição" style="font-size:12px;">
+										<p:inputText value="#{alunoBean.aluno.descPatologia}"
+											id="aluno-descPatologia" size="60" maxlength="60"/>
+									</p:fieldset>
+								</h:panelGrid>
+							</p:fieldset>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Historico 2a. Parte">
+						<h:panelGrid columns="2">
+							<p:fieldset legend="Restriçao Médica" style="font-size:12px;">
+								<h:panelGrid columns="2">
+									<h:selectOneRadio id="aluno-restricaomedica"
+										value="#{alunoBean.aluno.restricaomedica}">
+										<f:selectItem itemLabel="Sim" itemValue="S" />
+										<f:selectItem itemLabel="Não" itemValue="N" />
+									</h:selectOneRadio>
+									<p:fieldset legend="Descrição" style="font-size:12px;">
+										<p:inputText value="#{alunoBean.aluno.descRestricaoMedica}"
+											id="aluno-descRestricaoMedica" size="60" maxlength="60" />
+									</p:fieldset>
+								</h:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Outras" style="font-size:12px;">
+								<p:inputTextarea value="#{alunoBean.aluno.obs}" id="aluno-obs"
+									cols="50" rows="5" />
+							</p:fieldset>
+						</h:panelGrid>
+					</p:tab>
+				</p:tabView>
+				<p:commandButton id="btCadastrar" value="Cadastrar" image="ui-icon-disk"
+					oncomplete="inserir.show()"
+					rendered="#{alunoBean.aluno.nome == null}" />
+				<p:commandButton id="btAtualizar" value="Atualizar" image="ui-icon-disk"
+					rendered="#{alunoBean.aluno.nome != null}"
+ 				    oncomplete="atualizar.show()" />
+				<p:commandButton id="btNovo" value="Novo" image="ui-icon-disk"
+					update="formPrincipal" 
+					actionListener="#{alunoBean.novo}"
+					rendered="#{alunoBean.aluno.nome != null}" />
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="tabela" value="#{alunoBean.alunos}" 
+					var="aluno" binding="#{alunoBean.tabela}"
+					emptyMessage="sem registros" scrollable="true" height="100" style="font-size:12px;" >
+					
+					<p:column headerText="Nome" footerText="Nome" style="width:150px;" filterMatchMode="contains" filterBy="#{aluno.nome}">
+						<h:outputText value="#{aluno.nome}" />
+					</p:column>
+					
+					<p:column headerText="Sobrenome" footerText="Sobrenome" style="width:150px;" filterMatchMode="contains" filterBy="#{aluno.sobrenome}">
+						<h:outputText value="#{aluno.sobrenome}" />
+					</p:column>
+					
+					<p:column headerText="Tel. Res." footerText="Endereco" style="width:100px;">
+						<h:outputText value="#{aluno.foneres}" />
+					</p:column>
+					
+					<p:column headerText="Celular 1" footerText="CPF" style="width:100px;">
+						<h:outputText value="#{aluno.fonecel}" />
+					</p:column>
+					
+					<p:column headerText="Celular 2" footerText="CPF" style="width:100px;">
+						<h:outputText value="#{aluno.fonecel2}" />
+					</p:column>
+					
+					<p:column headerText="e-Mail" footerText="RG" style="width:100px;">
+						<h:outputText value="#{aluno.email}" />
+					</p:column>
+					
+					<p:column style="width:100px">
+						<p:commandButton image="ui-icon-pencil" title="Alterar"	actionListener="#{alunoBean.alterar}" update="formPrincipal" />
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()" >
+			    			<f:setPropertyActionListener value="#{aluno}" target="#{alunoBean.tipoAlunoSelecionado}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:confirmDialog message="Deseja Incluir?" header="Inclusão" widgetVar="inserir" width="350">
+                <h:form id="formIncluir">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="inserir.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 action="#{alunoBean.salvar}" oncomplete="inserir.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+			<p:confirmDialog message="Deseja Alterar?" header="Alteração" severity="alert" widgetVar="atualizar" width="350">
+                <h:form id="formAlterar">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 actionListener="#{alunoBean.atualizar}" oncomplete="atualizar.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+   			<p:confirmDialog message="Deseja Apagar?" header="Exclusão" severity="alert" widgetVar="confirmdlg">
+    			<h:form id="formExcluir">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl" ajax="false" actionListener="#{alunoBean.excluir}" oncomplete="confirmdlg.hide()"/>
+				</h:form>
+    		</p:confirmDialog>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

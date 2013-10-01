@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Funcionário" scrollable="true">
+			<h:form id="formPrincipal">
+				<p:growl id="growl" showDetail="true" />
+				<p:focus />
+				<p:tabView id="formTab">
+					<p:tab title="Dados Pessoais">
+						<h:panelGrid columns="5">
+							<p:fieldset legend="Nome" style="font-size:12px; width:80%;" >
+								<p:inputText id="funcionario-nome" required="true"
+									requiredMessage="Campo [Nome] obrigatório"
+									value="#{funcionarioBean.funcionario.nome}" size="20"
+									maxlength="20" />
+							</p:fieldset>
+
+							<p:fieldset legend="Sobrenome" style="font-size:12px; width:80%;">
+								<p:inputText id="funcionario-sobrenome"
+									value="#{funcionarioBean.funcionario.sobrenome}" size="40"
+									maxlength="40" />
+							</p:fieldset>
+
+							<p:fieldset legend="Cargo" style="font-size:12px;">
+								<h:selectOneMenu id="selectCargo" title="Selecione um cargo"
+									value="#{funcionarioBean.car_codigo}" required="true"
+									requiredMessage="Campo [Cargo] obrigatório">
+									<f:selectItems value="#{funcionarioBean.cargos}" />
+								</h:selectOneMenu>
+							</p:fieldset>
+
+							<p:fieldset legend="Sexo" style="font-size:12px;">
+								<h:selectOneRadio id="funcionario-sexo"
+									value="#{funcionarioBean.funcionario.sexo}">
+									<f:selectItem itemLabel="Masculino" itemValue="M" />
+									<f:selectItem itemLabel="Feminino" itemValue="F" />
+								</h:selectOneRadio>
+							</p:fieldset>
+
+							<p:fieldset legend="Estado Civil" style="font-size:12px;">
+								<h:selectOneRadio id="funcionario-estcivil"
+									value="#{funcionarioBean.funcionario.estadocivil}">
+									<f:selectItem itemLabel="Solteiro" itemValue="S" />
+									<f:selectItem itemLabel="Casado" itemValue="C" />
+								</h:selectOneRadio>
+							</p:fieldset>
+
+							<p:fieldset legend="Data de Nascimento" style="font-size:12px;">
+									<p:inputMask value="#{funcionarioBean.funcionario.nascimento}"
+											mask="99/99/9999" pattern="dd/MM/yyyy" >
+										<f:convertDateTime pattern="dd/MM/yyyy"  timeZone="America/Sao_Paulo"/>
+									<p:ajax event="blur" update="funcionario-idade" listener="#{funcionarioBean.setarIdade}" />
+									</p:inputMask>
+							</p:fieldset>
+
+							<p:fieldset legend="Idade" style="font-size:12px;">
+								<h:outputText id="funcionario-idade" value="#{funcionarioBean.funcionario.idade}" />
+							</p:fieldset>
+
+							<p:fieldset legend="RG" style="font-size:12px;">
+								<p:inputMask id="funcionario-rg"
+									value="#{funcionarioBean.funcionario.rg}"
+									mask="99.999.999?-9" size="15" maxlength="15" />
+							</p:fieldset>
+
+							<p:fieldset legend="CPF" style="font-size:12px;">
+								<p:inputMask id="funcionario-cpf"
+									value="#{funcionarioBean.funcionario.cpf}"
+									mask="999.999.999-99" size="15" maxlength="15" />
+							</p:fieldset>
+
+							<p:fieldset legend="Cidade" style="font-size:12px;">
+								<h:selectOneMenu id="selectCidade"
+									value="#{funcionarioBean.cid_Codigo}"
+									title="Selecione uma cidade">
+									<f:selectItems value="#{alunoBean.cidades}" />
+								</h:selectOneMenu>
+							</p:fieldset>
+
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Dados Complementares">
+						<h:panelGrid columns="4" width="80%">
+
+							<p:fieldset legend="Endereço" style="font-size:12px; width:80%;">
+								<p:inputText id="funcionario-endereco" value="#{funcionarioBean.funcionario.endereco}" size="40" maxlength="40"/>
+							</p:fieldset>
+
+							<h:panelGroup>
+								<h:panelGrid columns="2">
+									<p:fieldset legend="Número" style="font-size:12px; width:80%;">
+										<p:inputText id="funcionario-numero" value="#{funcionarioBean.funcionario.numero}" size="10" maxlength="10"/>
+									</p:fieldset>
+		
+									<p:fieldset legend="Complemento" style="font-size:12px; width:80%;">
+										<p:inputText id="funcionario-complemento" value="#{funcionarioBean.funcionario.complemento}" size="10" maxlength="10"/>
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+
+							<p:fieldset legend="Bairro" style="font-size:12px; width:80%;">
+								<p:inputText id="funcionario-bairro" value="#{funcionarioBean.funcionario.bairro}" size="20" maxlength="20" />
+							</p:fieldset>
+
+							<p:fieldset legend="CEP" style="font-size:12px; width:20%;">
+								<p:inputMask id="funcionario-cep" mask="99.999-999" value="#{funcionarioBean.funcionario.cep}" size="16" maxlength="16" style="font-size:12px; width:70px;"/>
+							</p:fieldset>
+
+							<h:panelGroup>
+								<h:panelGrid columns="4">
+									<p:fieldset legend="Tel. Res." style="font-size:12px; width:80%;">
+										<p:inputMask id="funcionario-telres" value="#{funcionarioBean.funcionario.foneres}" mask="(99)9999-9999" size="10" maxlength="10"/>
+									</p:fieldset>
+		
+									<p:fieldset legend="Tel. Com." style="font-size:12px; width:80%;">
+										<p:inputMask id="funcionario-telcom" mask="(99) 9999-9999" value="#{funcionarioBean.funcionario.fonecom}" size="10" maxlength="10" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Celular 1" style="font-size:12px; width:80%;">
+										<p:inputMask id="funcionario-telcel" value="#{funcionarioBean.funcionario.fonecel}" mask="(99)9999-9999" size="10" maxlength="10" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Celular 2" style="font-size:12px; width:80%;">
+										<p:inputMask id="funcionario-telcel2" value="#{funcionarioBean.funcionario.fonecel2}" mask="(99)9999-9999" size="10" maxlength="10" />
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+
+							<h:panelGroup>
+								<h:panelGrid columns="2">
+									<p:fieldset legend="Dt Cadastro" style="font-size:12px; width:170;">
+										<p:calendar id="funcionario-dtcad" showOn="button"
+											value="#{funcionarioBean.funcionario.cadastro}"
+											pattern="dd/MM/yyyy" size="10" maxlength="10" />
+									</p:fieldset>
+		
+									<p:fieldset legend="Dt Demissão" style="font-size:12px; width:170;">
+										<p:calendar id="funcionario-dtsaida" showOn="button" 
+											value="#{funcionarioBean.funcionario.demissao}"
+											pattern="dd/MM/yyyy" size="10" maxlength="10" />
+									</p:fieldset>
+								</h:panelGrid>
+							</h:panelGroup>
+
+							
+							<p:fieldset legend="Ativo" style="font-size:12px; width:10%;">
+								<h:selectOneRadio id="funcionario-ativo"
+									value="#{funcionarioBean.funcionario.ativo}">
+									<f:selectItem itemLabel="Sim" itemValue="S" />
+									<f:selectItem itemLabel="Não" itemValue="N" />
+								</h:selectOneRadio>
+							</p:fieldset>
+
+							<h:panelGroup></h:panelGroup>
+							
+							<p:fieldset legend="Outras" style="font-size:12px; width:50;">
+								<p:inputTextarea id="funcionario-obs" value="#{funcionarioBean.funcionario.obs}" cols="30" rows="3"/>
+							</p:fieldset>
+
+							<p:fieldset legend="e-Mail" style="font-size:12px; width:150;">
+								<p:inputText id="funcionario-email"	value="#{funcionarioBean.funcionario.email}" size="30" maxlength="30"/>
+							</p:fieldset>
+							
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Historico 1a. Parte">
+						<h:panelGrid columns="2" width="80%">
+							<p:fieldset legend="Título de Eleitor" style="font-size:12px;">
+								<p:inputText value="#{funcionarioBean.funcionario.tituloeleitor}"
+									id="funcionario-tituloeleitor" size="20" maxlength="20" />
+							</p:fieldset>
+							<p:fieldset legend="Carteira de Trabalho" style="font-size:12px;">
+								<h:panelGrid columns="2" width="80%">
+									<p:fieldset legend="Número" style="font-size:12px;">
+										<p:inputText value="#{funcionarioBean.funcionario.carttrabnumero}"
+											id="funcionario-carttrabnumero" size="10" maxlength="10" />
+									</p:fieldset>
+									<p:fieldset legend="Série" style="font-size:12px;">
+										<p:inputText value="#{funcionarioBean.funcionario.carttrabSerie}"
+											id="funcionario-carttrabseria" size="10" maxlength="10" />
+									</p:fieldset>
+								</h:panelGrid>
+							</p:fieldset>
+						</h:panelGrid>
+					</p:tab>					
+				</p:tabView>
+				<p:commandButton id="btCadastrar" value="Cadastrar" image="ui-icon-disk" 
+					rendered="#{funcionarioBean.funcionario.nome == null}"
+					oncomplete="inserir.show()" >
+				</p:commandButton>
+				<p:commandButton id="btAtualizar" value="Atualizar" image="ui-icon-disk"
+				    rendered="#{funcionarioBean.funcionario.nome != null}" 
+				    oncomplete="atualizar.show()"/>
+				<p:commandButton id="btNovo" value="Novo" update="formPrincipal"
+					actionListener="#{funcionarioBean.novo}"
+					rendered="#{funcionarioBean.funcionario.nome != null}" />
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="tabela"
+					value="#{funcionarioBean.funcionarios}"
+					emptyMessage="sem registros" var="funcionario"
+					binding="#{funcionarioBean.tabela}" scrollable="true" height="100" style="font-size:12px;" >
+					
+					<p:column headerText="Nome" footerText="Nome" style="width:100px;"
+							filterMatchMode="contains" filterBy="#{funcionario.nome}">
+						<h:outputText value="#{funcionario.nome}" />
+					</p:column>
+					
+					<p:column headerText="Sobrenome" footerText="Sobrenome" style="width:150px;"
+							filterMatchMode="contains" filterBy="#{funcionario.sobrenome}">
+						<h:outputText value="#{funcionario.sobrenome}" />
+					</p:column>
+					
+					<p:column headerText="Endereco" footerText="Endereco" style="width:100px;">
+						<h:outputText value="#{funcionario.endereco}" />
+					</p:column>
+					
+					<p:column headerText="CPF" footerText="CPF" style="width:100px;">
+						<h:outputText value="#{funcionario.cpf}" />
+					</p:column>
+					
+					<p:column headerText="RG" footerText="RG" style="width:100px;">
+						<h:outputText value="#{funcionario.rg}" />
+					</p:column>
+					
+					<p:column style="width:100px">
+						<p:commandButton image="ui-icon-pencil"
+							actionListener="#{funcionarioBean.alterar}"
+							update="formPrincipal" />
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()" >
+			    			<f:setPropertyActionListener value="#{funcionario}" target="#{funcionarioBean.tipoFuncionarioSelecionado}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:confirmDialog message="Deseja Incluir?" header="Inclusão" widgetVar="inserir" width="350">
+                <h:form id="formIncluir">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="inserir.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 actionListener="#{funcionarioBean.salvar}" oncomplete="inserir.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+			<p:confirmDialog message="Deseja Alterar?" header="Alteração" widgetVar="atualizar" width="350">
+                <h:form id="formAlterar">
+	                <h:panelGrid columns="2">
+		                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+		                <p:commandButton value="Confirmar" update="formPrincipal formTabela" ajax="false"
+		                 actionListener="#{funcionarioBean.atualizar}" oncomplete="atualizar.hide()"/>
+	                </h:panelGrid>
+                 </h:form>
+    		</p:confirmDialog>
+   			<p:confirmDialog message="Deletar?" header="Exclusão" widgetVar="confirmdlg">
+   				<h:form id="formExcluir">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl" ajax="false"
+	                 actionListener="#{funcionarioBean.excluir}" oncomplete="confirmdlg.hide()"/>
+                 </h:form>
+    		</p:confirmDialog>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

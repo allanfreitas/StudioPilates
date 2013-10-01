@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<h:form>
+	<p:menu style="width: 98%; height:90% ">
+		<p:submenu label="CADASTRO">
+			<p:menuitem value="Aluno"         url="../formularios/formularioAluno.xhtml" />
+			<p:menuitem value="Funcionário"	  url="../formularios/formularioFuncionario.xhtml" />
+			<p:menuitem value="Cidade"	      url="../formularios/formularioCidade.xhtml" />
+			<p:menuitem value="Modalidade"    url="../formularios/formularioModalidade.xhtml" />
+			<p:menuitem value="Turma"         url="../formularios/formularioTurma.xhtml" />
+			<p:menuitem value="Cargo"         url="../formularios/formularioCargo.xhtml" />
+			<p:menuitem value="Usuario"	      url="../formularios/formularioUsuario.xhtml" />
+		</p:submenu>
+		<p:submenu label="MOVIMENTAÇÃO">
+			<p:menuitem value="Mensalidade"   url="../formularios/formularioMensalidade.xhtml" />
+			<p:menuitem value="Frequencia"    url="../formularios/formularioFrequencia.xhtml" />
+			<p:menuitem value="Reposição"     url="../formularios/formularioReposicao.xhtml" />
+			<p:menuitem value="Turma e Aluno" url="../formularios/formularioTurmaAluno.xhtml" />
+		</p:submenu>
+		<p:submenu label="RELATÓRIO">
+			<p:menuitem value="Aluno"         url="../formularios/relatorioAluno.xhtml" />
+			<p:menuitem value="Funcionário"   url="../formularios/relatorioFuncionario.xhtml" />
+			<p:menuitem value="Cidade"        url="../formularios/relatorioCidade.xhtml" />
+			<p:menuitem value="Modalidade"    url="../formularios/relatorioModalidade.xhtml" />
+			<p:menuitem value="Turma"         url="../formularios/relatorioTurma.xhtml" />
+			<p:menuitem value="Cargo"         url="../formularios/relatorioCargo.xhtml" />
+			<p:menuitem value="Usuário"       url="../formularios/relatorioUsuario.xhtml" />
+			<p:menuitem value="Mensalidade"   url="../formularios/relatorioMensalidade.xhtml" />
+			<p:menuitem value="Frequência"    url="../formularios/relatorioFrequencia.xhtml" />
+			<p:menuitem value="Reposição"    url="../formularios/relatorioReposicao.xhtml" />
+			<p:menuitem value="Turma e Aluno" url="../formularios/relatorioTurmaAluno.xhtml" />
+		</p:submenu>
+		<p:submenu label="UTILITÁRIOS">
+			<p:menuitem value="Backup"        url="../formularios/formularioBackup.xhtml" />
+		</p:submenu>
+		<p:submenu>
+			<p:menuitem value="Sair" action="#{loginBean.efetuaLogoff}" ajax="false" />
+		</p:submenu>
+	</p:menu>
+</h:form>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Studio Pilates</title>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.maskMoney.js">			
+	</script>
+</h:head>
+<h:body>
+	<p:layout fullPage="true" id="formularioPrincipal">
+		<p:layoutUnit position="top" height="80" header="Studio Pilates CorpoAlma" closable="true" collapsible="true" >
+			<h:outputText style="text-align:right" value="Usuário logado: #{loginBean.usuario.funcionario.nome}"/>
+		</p:layoutUnit>
+		<p:layoutUnit position="left" width="170" header="Menu"	closable="true" collapsible="true" scrollable="true">
+			<ui:include src="menuEsquerdo.xhtml" />
+		</p:layoutUnit>
+			<ui:insert name="conteudo" />
+		<p:layoutUnit position="bottom" height="33"
+			header="Luciano Martins - zicadopv@gmail.com"
+			closable="true" collapsible="true">
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

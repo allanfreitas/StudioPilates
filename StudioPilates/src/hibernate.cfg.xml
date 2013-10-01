@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <property name="hibernate.connection.datasource">java:/comp/env/jdbc/luxu</property>
+  <property name="hibernate.current_session_context_class">thread</property>
+  <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+  <property name="hibernate.jdbc.batch_size">0</property>
+  <!-- Configuração Cache 
+      <property name="hibernate.generate_statistics">true</property>
+      <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+      <property name="hibernate.cache.use_second_level_cache">true</property>
+      <property name="hibernate.cache.use_query_cache">true</property>
+  -->
+  <property name="show_sql">false</property>
+  <property name="format_sql">false</property>
+  <property name="hibernate.show_sql">false</property>
+  <property name="hibernate.format_sql">false</property>
+  <mapping class="br.com.luxu.classe.Aluno"/>
+  <mapping class="br.com.luxu.classe.Cidade"/>
+  <mapping class="br.com.luxu.classe.Funcionario"/>
+  <mapping class="br.com.luxu.classe.Modalidade"/>
+  <mapping class="br.com.luxu.classe.Mensalidade"/>
+  <mapping class="br.com.luxu.classe.Frequencia"/>
+  <mapping class="br.com.luxu.classe.Cargo"/>
+  <mapping class="br.com.luxu.classe.Turma"/>
+  <mapping class="br.com.luxu.classe.Turma_Aluno"/>
+  <mapping class="br.com.luxu.classe.Usuario"/>
+ </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../formularios/template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:define name="conteudo">
+		<p:layoutUnit position="center" header="Mensalidade">
+			<p:growl id="growl" showDetail="true" />
+			<h:form id="formGerar">
+				<p:panel id="panelGerar" style="width: 250px;">
+					<p:commandButton id="btGerar" value="Gerar Mensalidades" actionListener="#{mensalidadeBean.gerar}"	update="formTabela"/>
+				</p:panel>
+			</h:form>
+			<h:form id="formPrincipal">
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery('input[id*=campoValor]').maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true});
+				});
+				</script>
+				<p:focus />
+				<p:panel id="panelEditar" style="width: 800px;"	rendered="#{not empty mensalidadeBean.mensalidade.data}">
+					<h:panelGrid columns="5">
+
+						<p:fieldset id="campoAluno" legend="Aluno" style="font-size:12px;">
+							<h:outputText value="#{mensalidadeBean.mensalidade.turmaAluno.aluno.nome}" />
+						</p:fieldset>
+
+						<p:fieldset id="campoDataPagto" legend="Data Pagamento" style="font-size:12px;">
+							<p:calendar id="mensalidade-datapg" size="10" maxlength="10" value="#{mensalidadeBean.mensalidade.pagamento}" pattern="dd/MM/yyyy" showOn="button" />
+						</p:fieldset>
+
+						<p:fieldset legend="Pagamento" style="font-size:12px;">
+							<p:inputText id="campoValor" value="#{mensalidadeBean.mensalidade.turmaAluno.valor}" size="10">
+									<f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="R$" />
+							</p:inputText>
+						</p:fieldset>
+
+					</h:panelGrid>
+				</p:panel>
+				<p:commandButton id="btAlterar" value="Atualizar"
+					rendered="#{not empty mensalidadeBean.mensalidade.data}"
+				    oncomplete="atualizar.show()" />
+				<p:commandButton id="btCancelar" value="Cancelar"
+					rendered="#{not empty mensalidadeBean.mensalidade.data}"
+					action="#{mensalidadeBean.cancelar}"
+					update="formPrincipal,panelEditar" />
+			</h:form>
+			<h:form id="formTabela">
+				<p:dataTable id="table" var="mensalidade"
+					value="#{entradaMensalidadesBBean.mensalidades}"
+					binding="#{mensalidadeBean.tabela}" scrollable="true" height="100"
+					emptyMessage="Sem dados" style="font-size:12px;">
+					
+					<p:column headerText="Aluno" footerText="Aluno" style="width:110px;"
+							filterMatchMode="contains" filterBy="#{mensalidade.turmaAluno.aluno.nome}">
+						<h:outputText value="#{mensalidade.turmaAluno.aluno.nome}" />
+					</p:column>
+					
+					<p:column headerText="Vencimento" footerText="Vencimento" style="width:80px;">
+						<h:outputText value="#{mensalidade.vencimento}">
+							 <f:converter converterId="converterData" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Data Pagamento" footerText="Data Pagamento" style="width:100px;">
+						<h:outputText value="#{mensalidade.pagamento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Pagamento" footerText="Pagamento"	style="width:80px;">
+						<h:outputText value="#{mensalidade.turmaAluno.valor}" >
+							<f:convertNumber pattern="R$ #,##0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Total" footerText="Total" style="width:80px;">
+						<h:outputText value="#{mensalidade.valor}" >
+							<f:convertNumber pattern="R$ #,##0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:100px;">
+						<p:commandButton image="ui-icon-pencil" title="Alterar" 
+							action="#{mensalidadeBean.alterar}"
+							update="panelEditar,formPrincipal,btAlterar" />
+			    		<p:commandButton image="ui-icon-trash" title="Remover" oncomplete="confirmdlg.show()">
+			    			<f:setPropertyActionListener value="#{mensalidade}" target="#{mensalidadeBean.tipoMensalidadeSelecionada}" />
+			    		</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+   			<p:confirmDialog message="Deseja continuar?" header="Alteração" severity="alert" widgetVar="atualizar">
+                <h:form id="formAlterar">
+	                <p:commandButton value="Cancelar" onclick="atualizar.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl formPrincipal formTabela" ajax="false" actionListener="#{mensalidadeBean.atualizar}"
+	                 oncomplete="atualizar.hide()"/>
+				</h:form>
+    		</p:confirmDialog>
+   			<p:confirmDialog message="Deseja continuar?" header="Exclusão" severity="alert" widgetVar="confirmdlg">
+	   			<h:form id="formExcluir">
+	                <p:commandButton value="Cancelar" onclick="confirmdlg.hide()" type="button" />
+	                <p:commandButton value="Confirmar" update="growl formPrincipal formTabela" ajax="false" actionListener="#{mensalidadeBean.excluir}"
+	                 oncomplete="confirmdlg.hide()"/>
+				</h:form>
+    		</p:confirmDialog>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>
